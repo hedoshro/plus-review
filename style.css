@@ -105,6 +105,3 @@ input.button {
   color: rgb(50, 50, 221);
   transition: all 200ms ease-in-out;
 }
-.forecast {
-  padding: 40px;
-}

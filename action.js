@@ -60,5 +60,27 @@ document.addEventListener("DOMContentLoaded", () => {
     mainIcon.setAttribute("src", response.data.condition.icon_url);
   }
 
+  function displayForecast() {
+    let forecastHtml = `<div class="row">`;
+    let days = ["Tue", "Wed", "Thu", "Fri", "Sat"];
+    days.forEach(function (day) {
+      forecastHtml =
+        forecastHtml +
+        `
+        <div class="weather-forecast m-4 p-3">
+          <h3>${day}</h3>
+          <img src="./weathericon.png" alt="weather icon" width="60px" />
+          <p>5°<strong>22°</strong></p>
+          </div>
+          
+          
+      `;
+      forecastHtml = forecastHtml + `</div>`;
+    });
+    let forecast = document.querySelector("#forecast");
+    forecast.innerHTML = forecastHtml;
+  }
+
   showCity("london");
+  displayForecast();
 });
