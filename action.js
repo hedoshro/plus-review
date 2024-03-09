@@ -43,7 +43,6 @@ document.addEventListener("DOMContentLoaded", () => {
 
   function showDetails(response) {
     let city = (document.querySelector(".city").innerHTML = response.data.city);
-    let input = document.querySelector(".input");
 
     let cityTemp = (document.querySelector(".temperature").innerHTML =
       Math.round(response.data.temperature.current));
@@ -58,29 +57,49 @@ document.addEventListener("DOMContentLoaded", () => {
     ));
     let mainIcon = document.querySelector(".main-icon");
     mainIcon.setAttribute("src", response.data.condition.icon_url);
+
+    getForecast(response.data.city);
   }
 
-  function displayForecast() {
+  function getForecast(city) {
+    let apiKey = "a49f0cad903e09dc8e1t8o40aab88ab3";
+    let apiUrlForecast = `https://api.shecodes.io/weather/v1/forecast?query=${city}&key=${apiKey}`;
+    axios.get(apiUrlForecast).then(displayForecast);
+  }
+
+  function formatDay(timestamp) {
+    let date = new Date(timestamp * 1000);
+    let days = ["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"];
+    return days[date.getDay()];
+  }
+
+  function displayForecast(response) {
+    console.log(response);
     let forecastHtml = `<div class="row">`;
-    let days = ["Tue", "Wed", "Thu", "Fri", "Sat"];
-    days.forEach(function (day) {
-      forecastHtml =
-        forecastHtml +
-        `
-        <div class="weather-forecast m-4 p-3">
-          <h3>${day}</h3>
-          <img src="./weathericon.png" alt="weather icon" width="60px" />
-          <p>5°<strong>22°</strong></p>
+    let dailyForecast = response.data.daily;
+    dailyForecast.forEach(function (day, index) {
+      if (index < 5) {
+        forecastHtml =
+          forecastHtml +
+          `
+        <div class="weather-forecast m-4 p-4">
+          <h3>${formatDay(day.time)}</h3>
+          <img src="${day.condition.icon_url}"alt="weather icon" width="60px" />
+          <p>${Math.round(
+            day.temperature.minimum
+          )}°<strong class="p-2">${Math.round(
+            day.temperature.maximum
+          )}°</strong></p>
           </div>
           
           
       `;
-      forecastHtml = forecastHtml + `</div>`;
+        forecastHtml = forecastHtml + `</div>`;
+      }
     });
     let forecast = document.querySelector("#forecast");
     forecast.innerHTML = forecastHtml;
   }
 
   showCity("london");
-  displayForecast();
 });

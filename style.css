@@ -58,11 +58,12 @@ ul {
   list-style: none;
 }
 .details {
-  padding: 0px;
+  padding: 10px;
   margin: 0;
   position: relative;
   right: 96px;
   margin-left: 2px;
+  bottom: 10px;
 }
 .details li {
   font-size: 12px;
